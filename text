@@ -1,0 +1,28 @@
+<ul>
+                    <li><Link to="/about_us">About Tech</Link></li>
+                    <li><Link>Our Services</Link></li>
+                    <li><Link>How to shop on TECH</Link></li>
+                    <li><Link>FAQ</Link></li>
+                    <li><Link to="/contact_us">Contact us</Link></li>
+                </ul>
+
+
+                <ul>
+                    <li><Link to="/about_us">Payments Methods</Link></li>
+                    <li><Link>Money-back guarantee!</Link></li>
+                    <li><Link>Returns</Link></li>
+                    <li><Link>Shipping</Link></li>
+                    <li><Link to="/contact_us">Terms and conditions</Link></li>
+                    <li><Link to="/contact_us">Privacy Policy</Link></li>
+                </ul>
+
+
+                <ul>
+                    <li><Link to="/about_us">Sign In</Link></li>
+                    <li><Link>View Cart</Link></li>
+                    <li><Link>My Wishlist</Link></li>
+                    <li><Link>Track My Order</Link></li>
+                    <li><Link to="/contact_us">Help</Link></li>
+                </ul>
+
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi iste ex voluptas ab sit, quisquam delectus voluptatum aut. Accusamus, alias vel. Veniam debitis voluptatem et eligendi magni, ad repellat quas!

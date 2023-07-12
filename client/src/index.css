@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base{
+    .boxShadow{
+        box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    }
+    .boxShadow2{
+        box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
+    }
+    .setting li{
+        margin-bottom: 20px;
+    }
+    .setting li:not(:last-child){
+        border-bottom: 0.5px solid white;
+        padding-bottom: 10px;
+    }
+    .clipathTrue{
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        transition: all 0.3s ease;
+    }
+    .clipathFalse{
+        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+        transition: all 0.3s ease;
+    }
+    .imageContainer{
+        display: grid;
+        grid-template-columns: repeat( auto-fill, minmax(min(100px,100%), 1fr));
+        gap: 10px;
+        margin-top: 50px;
+    }
+    
+}
+@layer components{
+    .AddIcons {
+            bottom: -50px;
+            transition:.3s ease;
+        }
+    .image:hover .AddIcons{
+        bottom: 0;
+    }
+    .heartIcon{
+        right: -100px;
+        transition: .3s ease;
+    }
+    .image:hover .heartIcon{
+        right: 25px;
+    }
+    .HFooter ul li{
+        cursor: pointer;
+    }
+    .HFooter ul li a,
+    .filterCheck{
+        position: relative;
+        cursor: pointer;
+    }
+    .HFooter ul li a::after,
+    .filterCheck::after{
+        content: "";
+        position: absolute;
+        background-color: blue;
+        height: 1px;
+        width: 100%;
+        bottom: -1px;
+        left: 0;
+        transition: all 0.4s ease;
+        transform: scale(0,0);
+        z-index: 100;
+    }
+    .HFooter ul li:hover a::after,
+    .filterCheck:hover::after,
+    .filterCheck.active::after{
+        transform: scale(1,1);
+    }
+    .underText{
+        top: 10px;
+        transition: all 0.5s ease;
+    }
+    .overlay{
+        background-color: #131212b7;
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+    .ourTeam:hover .underText{
+        top: -100px;
+    }
+    .teamName,
+    .TeamT{
+        bottom: -1000px;
+        transition: 0.3s ease;
+    }
+    .TeamT{
+        transition: 0.4s ease;
+    }
+    .TeamAccount{
+        top: 1000px;
+        transition: 0.5s ease;
+    }
+    .ourTeam:hover .overlay{
+        opacity: 1;
+    }
+    .ourTeam:hover .teamName,
+    .ourTeam:hover .TeamT{
+        bottom: 0;
+    }
+    .ourTeam:hover .TeamAccount{
+        top: 0;
+    }
+}
