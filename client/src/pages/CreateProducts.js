@@ -58,6 +58,7 @@ const CreateProducts = () => {
         }
         createProduct({id, name, category, price, description, images, rate, discount }).then(data => {
             if ( !data.error ) {
+                toast.success("Done create product", toastTheme)
                 setTimeout(() => {
                     navigate("/")
                 }, 2000);
@@ -71,12 +72,6 @@ const CreateProducts = () => {
         <div className='px-[50px] mt-4 pt-[100px]'>
                 <form onSubmit={handleSubmit}>
                 <h1 className="text-center mb-4 text-4xl font-semibold bg-blue-600 text-slate-200 pb-1">Create Product</h1>
-                {
-                    isSuccess && toast.success("Done create product", toastTheme)
-                }
-                {
-                    isError && toast.error(error.data, toastTheme)
-                }
             <div className='flex flex-col items-center'>
                 <div className='mt-[60px] mb-[20px] formContainer flex  justify-around w-full'>
                     <div className='left'>
@@ -95,7 +90,7 @@ const CreateProducts = () => {
                 </div>
                 <div className='right'>
                     <div className=' flex flex-col items-start mb-4'>
-                        <label htmlFor='discount' className='text-lg font-semibold mb-2'>Have Discount($) ?</label>
+                        <label htmlFor='discount' className='text-lg font-semibold mb-2'>Price Before Discount($) ?</label>
                         <input type='text' defaultValue={discount} id='discount' placeholder= "Enter product discount" onChange={e=>setDiscount(e.target.value)} className='outline-none border w-[450px] pl-1 py-1'/>
                     </div>
                     <div className=' flex flex-col items-start mb-4'>

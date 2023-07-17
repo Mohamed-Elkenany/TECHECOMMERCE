@@ -27,6 +27,10 @@ const productSchema = new mongoose.Schema(
             type: String,
             required: [true, "Can't be blanck "]
         },
+        addLike: {
+            type: Boolean,
+            default:false,
+        },
         picture: {
             type: Array,
             required: true

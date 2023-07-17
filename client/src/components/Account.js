@@ -1,67 +1,80 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { AiOutlineDown } from "react-icons/ai";
 import { FiLogOut } from "react-icons/fi";
-import {Link} from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
 import '../pages/home.css'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../features/userSlice';
-const Account = (props) => {
+const Account = ({setOpen}) => {
+    const user = useSelector(state => state.user);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const handleLogOut = () => {
+        setOpen(false)
+        navigate("/")
+        setTimeout(() => {
+            dispatch(logout());
+        },1000)
+    }
 return (
-    <div className='boxShadow absolute bg-white left-0 w-full rounded-md top-[60px] px-[12px] pb-1'>
+    <div className=' absolute top-[60px] bg-white boxShadow w-[250px] right-4 z-[999] px-2 py-1 rounded-md'>
+        <div className=' border-b pb-1 pl-1'>
+            <h1 className='flex items-center gap-1'>
+                <span>Email</span>
+                <AiOutlineDown/>
+            </h1>
+            <h1 className='text-sm'>{user.email}</h1>
+        </div>
+        <div className=' border-b pb-1'>
+            {
+                (user.isAdmin) ? (
+                    <Link className='' onClick={()=>setOpen(false)}>
+                        <div className=' hover:bg-blue-600 hover:text-white pl-1 rounded-md'>
+                            <h1>Order</h1>
+                        </div>
+                    </Link>
+                ) : (
+                    <>
+                            <Link to="/orders" onClick={() => setOpen(false)}>
+                        <div className=' hover:bg-blue-600 pb-1 border-b hover:text-white pl-1 rounded-md'>
+                            <h1>Your orders</h1>
+                        </div>
+                    </Link>
+                    <Link to={`/${user._id}/Cart`} onClick={() => setOpen(false)}>
+                        <div className=' hover:bg-blue-600  hover:text-white pl-1 rounded-md'>
+                            <h1>Cart</h1>
+                        </div>
+                            </Link>
+                        </>
+                )
+            }
+        </div>
         {
-            (props.isAdmin) ?
-                (
-                <div>
-                    <div className=' border-b py-1'>
-                        <div className='flex items-center gap-1 text-sm '>
-                            <h4>Email</h4>
-                            <AiOutlineDown className='text-sm'/>
+            (user.isAdmin) && (
+                <div className=' border-b pb-1'>
+                    <Link to={`/${user._id}/create_product`} onClick={() => setOpen(false)}>
+                        <div className=' hover:bg-blue-600 hover:text-white pl-1 rounded-md'>
+                            <h1>Create Product</h1>
                         </div>
-                            <h4 className="text-sm hover:bg-slate-200">{props.email}</h4>
-                        </div>
-                        <div className=' border-b pb-1 mt-1 hover:bg-slate-200'>
-                            <h4 className="text-sm"><Link>Order</Link></h4>
-                        </div>
-                        <div className=' border-b pb-1 mt-1 hover:bg-slate-200'>
-                            <h4 className="text-sm"><Link to={`/${props._id}/create_product`}>Create product</Link></h4>
-                        </div>
-                        <div className=' border-b pb-1 mt-1 hover:bg-slate-200'>
-                            <h4 className="text-sm"><Link>Setting</Link></h4>
-                        </div>
-                        <div className='pb-1'>
-                        <div className=" flex items-center gap-1 mt-1 cursor-pointer hover:bg-slate-200" onClick={()=>dispatch(logout())}>
-                            <FiLogOut />
-                            <h4 className="text-sm">Logout</h4>
-                        </div>
-                    </div>
+                    </Link>
                 </div>
-                )
-                :
-                (
-                    <div>
-                        <div className=' border-b pb-1'>
-                        <div className='flex items-center gap-1 text-md'>
-                            <h4>Email</h4>
-                            <AiOutlineDown className='text-sm'/>
-                        </div>
-                        <h4>{props.email}</h4>
-                        </div>
-                        <div className=' border-b pb-1 mt-1'>
-                            <h4><Link>Cart</Link></h4>
-                        </div>
-                        <div className=' border-b pb-1 mt-1'>
-                        <h4><Link>Setting</Link></h4>
-                        </div>
-                        <div className='pb-1'>
-                        <div className=" flex items-center gap-1 mt-1 cursor-pointer" onClick={()=>dispatch(logout())}>
-                            <FiLogOut />
-                            <h4>Logout</h4>
-                            </div>
-                        </div>
-                    </div>
-                )
+            )
         }
+        <div className=' border-b pb-1'>
+            <Link className='' onClick={() => setOpen(false)}>
+                <div className=' hover:bg-blue-600 hover:text-white pl-1 rounded-md'>
+                    <h1>Sitting</h1>
+                </div>
+            </Link>
+        </div>
+        <div className='pb-1'>
+            <button className='w-full' onClick={handleLogOut}>
+                <div className=' flex items-center gap-1 hover:bg-blue-600 hover:text-white pl-1 rounded-md'>
+                    <FiLogOut/>
+                    <h1>LogOut</h1>
+                </div>
+            </button>
+        </div>
     </div>
     );
 }

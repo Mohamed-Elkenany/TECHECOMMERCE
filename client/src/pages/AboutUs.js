@@ -1,7 +1,7 @@
-import React from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import React, { useEffect } from 'react';
 import 'swiper/css';
 import banner from "../images/bg-5.jpg";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { BsArrowRight } from "react-icons/bs";
 import {FaFacebookF, FaInstagram, FaTwitter} from "react-icons/fa"
 import banner1 from "../images/hiki-app-ldYCkQnHg7M-unsplash.jpg";
@@ -9,9 +9,27 @@ import { Link } from "react-router-dom";
 import member1 from "../images/our_team/member-1.jpg";
 import member2 from "../images/our_team/WhatsApp Image 2023-07-12 at 00.47.09.jpg";
 import member3 from "../images/our_team/member-2.jpg";
+import user1 from "../images/our_team/user-1.jpg";
+import user2 from "../images/our_team/user-2.jpg";
+import MainFooter from "../components/MainFooter";
+import Footer from "../components/Footer";
+import Slider from "react-slick";
 import { brand1, brand3, brand4, brand5, brand6, brand7, brand8, brand9, brand2 } from "../utilites";
 const AboutUs = () => {
     const brands = [brand1, brand2, brand3, brand4, brand5, brand6, brand7, brand8, brand9];
+    const settings = {
+        dots: true,
+        lazyLoad: true,
+        infinite:true,
+        infinite: true,
+        autoplay: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1
+    };
+    useEffect(() => {
+        window.scroll(0,0)
+    },[])
     return (
     <div>
         <div className='px-[50px] pt-[90px] mb-[40px]'>
@@ -126,7 +144,7 @@ const AboutUs = () => {
                                     <div className='relative  overflow-hidden flex-[2]'>
                                         <div className='teamName text-center absolute  left-1/2  -translate-x-[50%] '>
                                             <h1 className='text-slate-300 text-xl font-medium'>Mohamed Elkenany</h1>
-                                            <p className="text-sm text-slate-500">Software Development</p>
+                                            <p className="text-sm text-slate-500">Software Engineer</p>
                                         </div>
                                     </div>
                                     <div className='relative text-center overflow-hidden flex-1'>
@@ -194,23 +212,39 @@ const AboutUs = () => {
                     </div>
                 </div>
         </div>
-        <div className="reviews bg-slate-50 mb-[120px] py-[80px]">
-            <h1 className="text-center text-2xl font-semibold mb-[80px]">What Customer Say About Us</h1>
-            <div className="px-[20px] w-full">
-                <Swiper
-    spaceBetween={50}
-    slidesPerView={3}
-    navigation
-    >
-        <SwiperSlide className="">
-            <div className='border w-[100vw]'>khjgjhj</div>
-        </SwiperSlide>
-        <SwiperSlide className="w-full">
-            <div className='border w-[100vw]'>khjgjhj</div>
-        </SwiperSlide>
-        </Swiper>
+        <div className="reviews bg-slate-100  py-[80px]">
+            <h1 className="text-center text-2xl font-semibold mb-[40px]">What Customer Say About Us</h1>
+            <div className='px-[30px]'>
+            <Slider {...settings}>
+            <div className=' w-full '>
+                <div className='w-full flex flex-col items-center'>
+                    <img src={user1} className='mb-2 rounded-full'/>
+                    <div className="text-center">
+                        <p className='w-[850px] text-slate-600 mb-1'>“ Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Pellentesque aliquet nibh nec urna.
+                            <br/>In nisi neque, aliquet vel, dapibus id, mattis vel, nisi. Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. Nullam mollis. Ut justo. Suspendisse potenti. ”
+                        </p>
+                        <h1 className='font-semibold'>Jenson Gregory</h1>
+                        <span className='text-slate-600'>Customer</span>
+                    </div>
+                </div>
+            </div>
+            <div className=' w-full '>
+                <div className='w-full flex flex-col items-center'>
+                    <img src={user2} className='mb-2 rounded-full'/>
+                    <div className="text-center">
+                        <p className='w-[850px] text-slate-600 mb-1'>“ Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Pellentesque aliquet nibh nec urna.
+                            <br/>In nisi neque, aliquet vel, dapibus id, mattis vel, nisi. Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. Nullam mollis. Ut justo. Suspendisse potenti. ”
+                        </p>
+                        <h1 className='font-semibold'>Samanta Grey</h1>
+                        <span className='text-slate-600'>Customer</span>
+                    </div>
+                </div>
+            </div>
+        </Slider>
             </div>
         </div>
+        <MainFooter/>
+        <Footer/>
     </div>
 );
 }

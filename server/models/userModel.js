@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt")
 const userSchema = new mongoose.Schema(
     {
         name: {
@@ -18,7 +17,7 @@ const userSchema = new mongoose.Schema(
                 message: prop => `${prop.value} is not a email`
             }
         },
-        password: {
+        hashPassword: {
             type: String,
             required: [true, "is require"],
         },
@@ -37,21 +36,17 @@ const userSchema = new mongoose.Schema(
                 count: 0,
             }
         },
-        notifications: {
-            type: Array
+        like: {
+            type: Object,
+            default: {
+                count:0,
+            }
         },
-        watchList: {
-            type: Array
-        },
-        order: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }]
+        order: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Orders' }],
     },
     { minimize: false, timestamps: true }
 )
 
-userSchema.pre("save", async function (next) {
-    this.password = await bcrypt.hash(this.password, 12);
-    next();
-})
 
 userSchema.pre("remove", (next) => {
     this.model("Order").remove({ owner: this._id }, next);

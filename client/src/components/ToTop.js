@@ -8,7 +8,7 @@ const ToTop = () => {
         })
     }
 return (
-    <div className='fixed top-[50%] right-1 bg-slate-400 hover:bg-blue-600 cursor-pointer rounded-full w-[40px] h-[40px] flex items-center justify-center' onClick={topTop}>
+    <div className='fixed z-[999] top-[50%] right-1 bg-slate-400 hover:bg-blue-600 cursor-pointer rounded-full w-[40px] h-[40px] flex items-center justify-center' onClick={topTop}>
         <BiArrowToTop className='text-white text-2xl'/>
     </div>
     );

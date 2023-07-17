@@ -4,9 +4,8 @@ import { useUpdateProductMutation } from '../services/appApi';
 import ClearIcon from '@mui/icons-material/Clear';
 import Loading from "../components/Loading"
 import { categoryName } from '../utilites';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import Error from "../components/Error";
 const UpdateProduct = () => {
     const toastTheme = {
         position: "top-right",
@@ -18,6 +17,7 @@ const UpdateProduct = () => {
         progress: undefined,
         theme: "light",
     };
+    const navigate = useNavigate()
     const { id } = useParams();
     const [product, setProduct] = useState();
     const [name, setName] = useState("")
@@ -34,7 +34,7 @@ const UpdateProduct = () => {
         })
         Widget.open();
     }
-    const [updateProduct, { isError, error, isLoading }] = useUpdateProductMutation();
+    const [updateProduct, { isError, error,isSuccess }] = useUpdateProductMutation();
     const removeImage = (imgObj) => {
         setImages(img => img.filter(image => (image.public_id !== imgObj.public_id)));
     }
@@ -44,35 +44,45 @@ const UpdateProduct = () => {
             return toast.warning("Please upload image's product", toastTheme);
         } else if (images.length > 0) { 
             updateProduct({ id, name, description, price, category, images });
+            toast.success("Success update", toastTheme)
+            setTimeout(() => {
+                navigate("/")
+            },1500)
         }
     }
     useEffect(() => {
         axios.get(`/product/${id}`).then(pro => {
             setProduct(pro.data)
             setImages(pro.data.picture)
+            setName(pro.data.name)
+            setDescription(pro.data.description)
+            setPrice(pro.data.price)
+            setCategory(pro.data.category)
         })
     },[id])
 return (
-    <div className='pt-[90px] px-[50px]'>
+    !product ? (<Loading />) :
+        (
+            <div className='pt-[90px] px-[50px]'>
         <div className='bg-black py-1 flex items-center justify-center text-white'>
             <h1 className='text-2xl font-medium'>Update Product</h1>
         </div>
-        <form className='flex flex-col items-center mt-5' onSubmit={(e)=>handleSubmit(e)}>
+        <form className='flex flex-col items-center mt-5' onSubmit={handleSubmit}>
             <div className='flex flex-col w-[400px] mb-3'>
                 <label htmlFor='name' className='mb-1 text-lg font-medium'>Product Name</label>
-                <input type='text' defaultValue={name} onChange={e=>setName(!e.target.value ? product.name : e.target.value)} placeholder='Update Name' id='name' className='border outline-none pl-1 py-1 '/>
+                <input required type='text' defaultValue={product.name} onChange={e=>setName(!e.target.value ? product.name : e.target.value)} placeholder='Update Name' id='name' className='border outline-none pl-1 py-1 '/>
             </div>
             <div className='flex flex-col w-[400px] mb-3'>
                 <label htmlFor='description' className='mb-1 text-lg font-medium'>Description</label>
-                <textarea type='text' defaultValue={description} onChange={e=>setDescription(!e.target.value ? product.description : e.target.value)} placeholder='Update Description' id='description' className='border outline-none pl-1 py-1 max-h-[100px]'/>
+                <textarea required type='text' defaultValue={product.description} onChange={e=>setDescription(!e.target.value ? product.description : e.target.value)} placeholder='Update Description' id='description' className='border outline-none pl-1 py-1 max-h-[100px]'/>
             </div>
             <div className='flex flex-col w-[400px]'>
                 <label htmlFor='price' className='mb-1 text-lg font-medium'>Product Price($)</label>
-                <input type='text' defaultValue={price} onChange={e=>setPrice(!e.target.value ? product.price : e.target.value)} placeholder='Update Price' id='price' className='border outline-none pl-1 py-1 '/>
+                <input type='text' required defaultValue={product.price} onChange={e=>setPrice(!e.target.value ? product.price : e.target.value)} placeholder='Update Price' id='price' className='border outline-none pl-1 py-1 '/>
             </div>
             <div  className='flex flex-col w-[400px] mt-6'>
                 <label htmlFor='category' className='mb-1 text-lg font-medium'>Category</label>
-                <select id="category"  onChange={e=>setCategory(!e.target.value ? product.category : e.target.value)} className='cursor-pointer py-1 text-center border outline-none bg-black text-white'>
+                <select id="category" required defaultChecked={product.category}  onChange={e=>setCategory(!e.target.value ? product.category : e.target.value)} className='cursor-pointer py-1 text-center border outline-none bg-black text-white'>
                     <option key="select_one" selected disabled>-- Update Category --</option>
                     {
                         categoryName.map((cate,i) => (
@@ -116,6 +126,7 @@ return (
                 pauseOnHover
                 theme="light"/>
     </div>
+        )
     );
 }
 

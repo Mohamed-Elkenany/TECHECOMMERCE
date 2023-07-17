@@ -4,12 +4,23 @@ import axios from "../axios"
 import Loading from '../components/Loading';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import OtherProduct from '../components/OtherProduct';
+import { ToastContainer, toast } from 'react-toastify';
 import Footer from '../components/Footer';
 import { useSelector } from 'react-redux';
-import { useDeleteProductMutation } from '../services/appApi';
+import { useDeleteProductMutation, useIncreaseProductCartByAmountMutation } from '../services/appApi';
 import { AiTwotoneStar } from 'react-icons/ai';
 import MainFooter from '../components/MainFooter';
 const ProductPage = () => {
+  const themToasty = {
+        position: "top-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        }
   const rateArray = [1, 2, 3, 4, 5];
   const navigate = useNavigate();
   const user = useSelector(state => state.user);
@@ -21,12 +32,15 @@ const ProductPage = () => {
   const [showAlert, setShowAlert] = useState(false);
   const id = params.id;
   const [deleteProduct, { isError, error, isLoading }] = useDeleteProductMutation();
-  const handleAlertDelete = () => {
-    setShowAlert(true)
-  };
+  const [increaseProductCartByAmount,{isSuccess}] = useIncreaseProductCartByAmountMutation();
+  const addTocart = (user, product, price,amount) => {
+    increaseProductCartByAmount({ userId: user, productId: product, price, amount})
+    toast.success( "Product Add To Cart", themToasty )
+  }
   const DeleteProduct =  () => {
     deleteProduct(id).then(data => {
-      if (data != {}) {
+      if (data !== {}) {
+        toast.success( "Product deleted successfully ", themToasty )
         setTimeout(() => {
           navigate("/")
         },1500)
@@ -38,15 +52,18 @@ const ProductPage = () => {
       setProduct(pro.data)
       setImageArray(pro.data.picture)
       setImage(pro.data.picture[0].url)
+      window.scroll(0,0)
     })
   }, [id])
   return (
-    <div className=" relative min-h-screen">
+    <div className="min-h-screen">
       {
         (!product) ? (
-          <Loading/>
+          <div className='relative min-h-[50vh]'>
+            <Loading />
+          </div>
         ) : (
-            <div className='flex flex-col px-[50px]'>
+            <div className='flex flex-col  px-[50px]'>
               <div className='pt-[100px] flex  mb-10'>
               <div className='left flex-1 flex flex-col'>
                 <div className='mb-2 w-[300px] h-[300px] flex items-center justify-center rounded-lg boxShadow2'>
@@ -123,16 +140,15 @@ const ProductPage = () => {
                             <div className='w-full flex flex-col items-center'>
                               <div className='w-[400px] mb-6 flex items-center flex-row-reverse justify-around'>
                                 <div className=''>
-                                <button className='border hover:bg-red-500 hover:text-white w-[35px]' onClick={()=>setCount(prev=> prev>0?prev-1:0)}>-</button>
-                                <input type='text' value={count} className='border outline-none w-[50px] text-center'/>
+                                <button className='border hover:bg-red-500 hover:text-white w-[35px]' onClick={()=>setCount(prev=> prev>0?prev-1:0)} disabled={ count<= 0 }>-</button>
+                                <input type='text' value={count} className='border outline-none w-[50px] text-center' readOnly/>
                                 <button className='border hover:bg-blue-600 hover:text-white w-[35px]' onClick={()=>setCount(prev=>prev+1)}>+</button>
                                 </div>
-                                <div className='flex items-center gap-2'>
-                                  <h1>Total_Cost:</h1>
-                                  <span>${count*parseFloat(product.price)}</span>
+                                <div className=''>
+                                  <h1>Total_Cost: <span>${count*parseFloat(product.price)}</span></h1>
                                 </div>
                               </div>
-                              <button className='flex items-center gap-2 border justify-center hover:bg-blue-600 hover:text-white h-[40px] w-[200px]'>
+                                <button disabled={count <= 0} onClick={() => addTocart(user._id, product._id, product.price,count)} className='flex items-center gap-2 border justify-center hover:bg-blue-600 hover:text-white h-[40px] w-[200px]'>
                                 <h1>ADD TO CART</h1>
                                 <AddShoppingCartIcon/>
                               </button>
@@ -172,7 +188,19 @@ const ProductPage = () => {
         )
       }
       <MainFooter/>
-      <Footer/>
+      <Footer />
+      <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+            />
     </div>
   );
 }

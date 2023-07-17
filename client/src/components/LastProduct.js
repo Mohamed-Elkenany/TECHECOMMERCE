@@ -1,13 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AiOutlineHeart, AiOutlineShoppingCart, AiTwotoneStar } from 'react-icons/ai';
 import { HiViewGridAdd } from 'react-icons/hi';
-import { useSelector } from 'react-redux';
+import { ToastContainer, toast } from 'react-toastify';
+import { useSelector} from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-
+import { useAddToCartMutation } from "../services/appApi";
 const LastProduct = (props) => {
+  const themToasty = {
+        position: "top-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        }
   const navigate = useNavigate();
+  const[like,setLike]=useState(false)
   const user = useSelector(state => state.user);
   const rateArray = [1, 2, 3, 4, 5];
+  const [addToCart, { isSuccess }] = useAddToCartMutation();
+  const AddTocart = () => {
+    addToCart({userId:user._id,productId:props._id,price:props.price})
+    toast.success( "Product Add To Cart", themToasty )
+  }
   return (
     <div>
       {
@@ -51,21 +68,19 @@ const LastProduct = (props) => {
               </div>
             </div>
               ): (
-                   <div className='lastProduct cursor-pointer boxShadow rounded-md'>
+                  <div className='lastProduct cursor-pointer boxShadow rounded-md'>
               <div className='image relative overflow-hidden'>
                 <img className='rounded-md w-full' src={props.picture[0].url} alt="product" />
                 <div className='icons'>
-                  <div
-                    className='heartIcon absolute top-6 h-[30px] w-[30px] border border-blue-700 flex items-center justify-center rounded-full hover:bg-blue-700 hover:text-white text-blue-700 '>
+                        <div  className={`heartIcon absolute top-6 h-[30px] w-[30px] border border-${like ? `none` : 'blue-700'} flex items-center justify-center rounded-full hover:bg-blue-700 hover:text-white text-${like ? `white` : 'blue-700'} bg-${like ? `blue-700` : 'white'}`}>
                     <AiOutlineHeart className=' font-semibold' />
                   </div>
                   <div className='AddIcons absolute  bg-slate-200 w-full'>
                     <div className="flex items-center justify-between">
-                      <Link to="/cart"
-                        className=' flex items-center justify-center text-blue-700 text-sm hover:underline w-[49%] border-r gap-1 hover:text-yellow-500 h-[40px]'>
+                      <button onClick={AddTocart} className=' flex items-center justify-center text-blue-700 text-sm hover:underline w-[49%] border-r gap-1 hover:text-yellow-500 h-[40px]'>
                       <AiOutlineShoppingCart />
                       <h3>Add To Cart</h3>
-                      </Link>
+                      </button>
                       <Link to={`/product/${props._id}`}
                         className=' flex items-center justify-center text-sm hover:underline text-blue-700 w-[49%] gap-1 hover:text-yellow-500 h-[40px]'>
                       <HiViewGridAdd />
@@ -127,6 +142,18 @@ const LastProduct = (props) => {
             </div>
         )
       }
+      <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+            />
     </div>
   )
 }

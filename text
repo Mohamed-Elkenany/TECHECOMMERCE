@@ -26,3 +26,69 @@
                 </ul>
 
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi iste ex voluptas ab sit, quisquam delectus voluptatum aut. Accusamus, alias vel. Veniam debitis voluptatem et eligendi magni, ad repellat quas!
+
+
+
+
+
+                const user = await userModel.findById(userId); const product = await productModel.findById(productId); const userLike =
+                user.like; const productLike = product.addLike; productLike = true; userLike[productId] = 1; product.addLike =
+                productLike; user.like = userLike; user.markModified('like'); product.markModified('addLike'); await user.save(); await
+                product.save(); res.status(200).json(user);
+
+
+
+
+
+                {
+        !user ? (
+          <div className='flex-[2] flex items-center justify-end py-2'>
+            <button className="bg-blue-700 text-white px-[30px] text-lg pb-1 rounded-md" onClick={() => navigate("/login")}>Login</button>
+          </div>
+        ): (
+            <div className='flex-[2] flex items-center justify-between py-1'>
+        <div>
+          {
+            (user.isAdmin) ? (
+                <IoMdNotificationsOutline className='text-2xl font-medium hover:text-blue-800 cursor-pointer'/>
+            ): (
+                <div className="flex items-center gap-3">
+                    <Link to={`/${user._id}/cart`} className='relative w-[30px] h-[30px] flex items-center justify-center rounded-full text-blue-600 hover:text-white hover:bg-blue-600'>
+                      {
+                            (user.cart.count !== 0) && (
+                              <div className="absolute -top-2 -left-1 w-5 h-5 font-medium flex items-center justify-center bg-white rounded-full text-sm z-[999]">
+                                <h1 className='  text-slate-600'>{user.cart.count}</h1>
+                              </div>
+                            )
+                      }
+                    <AiOutlineShoppingCart className='text-xl font-medium  cursor-pointer'/>
+                  </Link>
+                  <Link to="/like_product" className='w-[30px] h-[30px] flex items-center justify-center rounded-full text-blue-600 hover:text-white hover:bg-blue-600'>
+                    <div>
+                      <h1>{user.cart.count}</h1>
+                    </div>
+                    <AiOutlineHeart className='text-xl font-medium cursor-pointer' />
+                  </Link>
+                </div>
+            )
+          }
+        </div>
+        <div className='flex items-center gap-2 relative'>
+          <div className="w-[45px] h-[45px] rounded-full">
+            <img className='rounded-full w-full h-full object-contain' src={user.image} alt='avatar'/>
+          </div>
+          <div className="flex items-center cursor-pointer text-md font-medium select-none" onClick={handleOpen}>
+            <h1>{user.name}</h1>
+            <AiOutlineDown className='mt-1 ml-1'/>
+            
+          </div>
+        </div>
+      </div>
+        )
+      }
+      {
+        (open) && (<Account {...user} open={open}  />)
+
+
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore hic voluptatum, voluptates veniam quam unde. Ex quis possimus eveniet aut. Odio tempore velit sed libero illo fugit possimus fuga voluptates.
+      }

@@ -9,7 +9,7 @@ import { BsFillLockFill } from 'react-icons/bs';
 import {GiReturnArrow} from "react-icons/gi" 
 import {AiOutlineGift} from "react-icons/ai" 
 import { Link } from 'react-router-dom';
-import { updataProduct } from '../features/productSlice';
+import { resatePro, updataProduct } from '../features/productSlice';
 import LastProduct from '../components/LastProduct';
 import DealsAndOutlet from '../components/DealsAndOutlet';
 import Brands from '../components/Brands';
@@ -30,6 +30,7 @@ const Home = () => {
   };
   const cateName = useSelector(state=>state.shareCate);
   const products = useSelector(state => state.product);
+  console.log(products);
   let productsRev = [];
   products.map((product, i) => {
     productsRev.unshift(product);
@@ -47,6 +48,9 @@ const Home = () => {
             }
         })
   }, [])
+  useEffect(() => {
+        window.scroll(0,0)
+    },[])
   return (
     <div className='pt-[80px]'>
     <div className="px-[50px]">
@@ -158,7 +162,7 @@ const Home = () => {
       </div>
       <div className='lastProduct'>
           <h1 className='text-center text-4xl mb-[60px] font-bold'>{cateName}</h1>
-        <div className='grid grid-cols-4 mb-[60px] gap-14 relative'>
+        <div className='grid grid-cols-4  mb-[60px] gap-14 relative'>
         {
               productsRev.filter(product => {
             if(cateName === product.category){

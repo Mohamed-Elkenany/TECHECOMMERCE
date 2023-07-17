@@ -40,9 +40,78 @@ const appApi = createApi({
                 method: "PATCH",
                 body:product,
             })
-        })
+        }),
+        addToCart: builder.mutation({
+            query: product => ({
+                url: '/api/add_to_cart',
+                method: "POST",
+                body:product,
+            })
+        }),
+        increaseProductCart: builder.mutation({
+            query: product => ({
+                url: "/api/increase_product_cart",
+                method: "POST",
+                body:product,
+            }),
+        }),
+        increaseProductCartByAmount: builder.mutation({
+            query: product => ({
+                url: "/api/increase_product_cart_amount",
+                method: "POST",
+                body:product,
+            }),
+        }),
+        decreaseProductCart: builder.mutation({
+            query: product => ({
+                url:"/api/decrease_product",
+                method:"POST",
+                body:product,
+            })
+        }),
+        removeProductCart: builder.mutation({
+            query: product => ({
+                url:"/api/remove_product",
+                method:"POST",
+                body:product,
+            })
+        }),
+        addLike: builder.mutation({
+            query: product => ({
+                url: "/api/add_to_like",
+                method: "POST",
+                body: product,
+            }),
+        }),
+        removeLike: builder.mutation({
+            query: product => ({
+                url: "/api/remove_to_like",
+                method: "POST",
+                body: product,
+            }),
+        }),
+        createOrder: builder.mutation({
+            query: body => ({
+                url: "/orders",
+                method: "POST",
+                body,
+            })
+        }),
     }),
 })
 
-export const { useSignupMutation, useLoginMutation, useCreateProductMutation, useDeleteProductMutation, useUpdateProductMutation } = appApi;
+export const { useSignupMutation,
+    useLoginMutation,
+    useCreateProductMutation,
+    useDeleteProductMutation,
+    useUpdateProductMutation,
+    useAddToCartMutation,
+    useDecreaseProductCartMutation,
+    useIncreaseProductCartMutation,
+    useRemoveProductCartMutation,
+    useIncreaseProductCartByAmountMutation,
+    useAddLikeMutation,
+    useRemoveLikeMutation,
+    useCreateOrderMutation,
+} = appApi;
 export default appApi;
